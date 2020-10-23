@@ -1,0 +1,108 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+{% block navbar %} {{ parent() }}  {% endblock %} 
+    
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div id="calendar-holder"></div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fullcalendar/core@4.1.0/main.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@4.1.0/main.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fullcalendar/timegrid@4.1.0/main.min.css">
+    <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.css'  />
+    <link rel="stylesheet" href="{{ asset('style/css.css') }}"/>
+    
+{% endblock %}
+
+{% block javascripts %}
+    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/core@4.1.0/main.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/interaction@4.1.0/main.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@4.1.0/main.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/timegrid@4.1.0/main.min.js"></script>
+    
+   
+    <script type="text/javascript">
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            var calendarEl = document.getElementById('calendar-holder');
+            
+            
+            var calendar = new FullCalendar.Calendar(calendarEl,{
+                
+                
+                height:600,               
+                aspectRatio:3.5,
+                locale:'fr', 
+                timeFormat:'H(:mm)',      
+                editable: false, 
+                selectable:true,   
+                Duration:'01:00',
+             
+              
+                    
+                eventSources: [
+                    {
+                        url: "{{ path('fc_load_events') }}",
+                        method: "POST",
+                        extraParams: {
+                            filters: JSON.stringify({})
+                        },
+                        failure: () => {
+                             alert("There was an error while fetching FullCalendar!");
+                        },
+                     
+                    },
+                    ],
+              
+                allDaySlot:true,
+                slotEventOverlap : false,
+                slotLabelInterval: {minutes: 60}, //slots labeled by one hour
+                selectOverlap: true, //user not allowed to "select" periods of times that are occupied by events
+                defaultView: 'timeGridWeek', //start on week view
+                slotDuration: '00:30:00', //each hour is split into 15 minutes
+                minTime: "08:00:00", //start day 8am
+                maxTime: '18:00:00', //end day 17pm
+                scrollTime: '12:00:00', //start view at 12:00am?        
+                navLinks: true, // can click day/week names to navigate views
+                weekNumbersWithinDays: false, //styling week numbers in dayGrid view
+                
+                buttonText: {
+                        today:    'Aujourd\'hui',
+                        month:    'Mois',
+                        week:     'Semaine',
+                        day:      'Jour',
+                        },  
+                        
+                businessHours: {
+                        // days of week. an array of zero-based day of week integers (0=Sunday)
+                        daysOfWeek: [ 1, 2, 3, 4, 5 ], 
+                        
+                        startTime: '08:00', // a start time (08am in this example)
+                        endTime: '18:00', // an end time (6pm in this example)
+                    },
+
+                header: {
+                    left: 'prev,next,today',
+                    center: 'title',
+                    right: 'timeGridWeek,timeGridDay',
+                },
+                plugins: [ 'interaction', 'dayGrid', 'timeGrid'],  // https://fullcalendar.io/docs/plugin-index     
+                timeZone: 'Europe/Paris',
+                
+               
+            });
+            
+            calendar.render();
+        });
+    </script>
+{% endblock %}

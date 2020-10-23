@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouvelle Reservation{% endblock %}
+
+{% block body %}
+{% block navbar %} {{ parent() }}  {% endblock %} 
+
+<div class="container">
+    <div class="row">
+        <div class="col-6">
+            {{form_start(form) }} 
+            {{form_row(form)}} 
+            {{message}}
+        </div>
+    </div>
+</div>
+<div class="container">
+<div class="row">
+    <div class="col-12">
+       <button class="btn">{{ button_label|default('Valider') }}</button>
+   </div>
+</div>
+</div>
+
+{{form_end(form)}}
+    <div class="container">
+        <div class="row">
+            <div class="col-8">
+                <a href="{{ path('reservation_index') }}">Retour à la liste</a>
+            </div>
+        </div>
+    </div>
+    
+{% endblock %}
