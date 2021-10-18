@@ -9,23 +9,24 @@
     <table class="table">
         <thead>
             <tr>
-                
-                <th>DateHeureDebut</th>
-                <th>DateHeureFin</th>
-                <th>TitreEvenements</th>
+                <th>Formateur</th>
+                <th>Salle</th>
+                <th>Date de reservation</th>
+                <th>Heure de reservation</th>
+                <th>Evenements</th>
                 <th>actions</th>
             </tr>
         </thead>
         <tbody>
         {% for reservation in reservations %}
             <tr>
-                
-                <td>{{ reservation.DateHeureDebut ? reservation.DateHeureDebut|date('d-M-Y H:i:s') : '' }}</td>
-                <td>{{ reservation.DateHeureFin   ? reservation.DateHeureFin|date('d-M-Y H:i:s') : '' }}</td>
+                <td>{{ reservation.formateur.name}} {{reservation.formateur.surname}}  </td>
+                <td>{{ reservation.salle.libelleSalle}}</td>
+                <td> Du {{ reservation.DateHeureDebut ? reservation.DateHeureDebut|date('d-M-Y') : '' }} au {{ reservation.DateHeureFin ? reservation.DateHeureFin|date('d-M-Y') : '' }}</td>
+                <td>{{ reservation.DateHeureDebut   ? reservation.DateHeureDebut|date('H:i:s') : '' }} à {{ reservation.DateHeureFin   ? reservation.DateHeureFin|date('H:i:s') : '' }}</td>
                 <td>{{ reservation.TitreEvenements }}</td>
                 <td>
-                    <a href="{{ path('reservation_show', {'id': reservation.id}) }}">Voir</a>
-                    <a href="{{ path('reservation_edit', {'id': reservation.id}) }}">Editer</a>
+                    <a href="{{ path('reservation_edit', {'id': reservation.id}) }}">Modifier</a>
                     <a href="{{ path('reservation_delete', {'id': reservation.id}) }}">Supprimer</a>
                     
                 </td>

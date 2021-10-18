@@ -89,7 +89,7 @@ class CalendarSubscriber implements EventSubscriberInterface
           
             // this create the events with your data (here booking data) to fill calendar
                 $reservationEvent = new Event(
-                $reservation->getSalle()->getlibelleSalle() . " - " . $reservation->getTitreEvenements(),
+                $reservation->getSalle()->getlibelleSalle() ."-" .$reservation->getFormateur()->getname(),
                 $reservation->getDateHeureDebut(),
                 $reservation->getDateHeureFin(), // If the end date is null or not defined, a all day event is created.
                 $options = ['id'=> $reservation->getSalle()->getId()],

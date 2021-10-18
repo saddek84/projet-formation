@@ -12,6 +12,8 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateIntervalType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Doctrine\ORM\EntityRepository;
+
 
 
 
@@ -22,13 +24,7 @@ class ReservationType extends AbstractType
         $builder
             ->add('DateHeureDebut', DateTimeType::class, [
 
-                'label' => 'Date/Heure de Debut',
-                'hours'=> array(8,9,10,11,12,13,14,15,16,17),
-                'minutes' => array(0,15,30,45),
-                'years' => range(20,25,1),
-                'model_timezone'=>'Europe/Paris',
-                'view_timezone'=>'Europe/Paris',
-                
+                'time_label' => 'Start On'          
                 ])
 
             ->add('duration', DateIntervalType::class, [      
@@ -55,10 +51,8 @@ class ReservationType extends AbstractType
                 'class'  => Salle::class,
                 'choice_label'=>'libelleSalle',
             ])
-            ->add('formateur', EntityType::class,[
-                'class' => Formateur::class,
-                'choice_label' => 'name',
-            ])
+            
+            
             
         ;
     }

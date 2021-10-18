@@ -15,6 +15,8 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Constraints\DateTime;
 use Symfony\Component\Form\Extension\Core\Type\TimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateIntervalType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @Route("/reservation")
@@ -59,11 +61,12 @@ class ReservationController extends AbstractController
     /**
      * @Route("/new", name="reservation_new", methods={"GET","POST"})
      */
-    public function new(Request $request): Response   //creation d'une reservation
+    public function new(Request $request , UserInterface $user): Response   //creation d'une reservation
     {
         $reservation = new Reservation();
         $message='';
-        $reservation->setDateHeureDebut(new \DateTime('now', new \DateTimeZone('Europe/Paris')));
+        $reservation->setDateHeureDebut(new \DateTime('Now', new \DateTimeZone('Europe/Paris')));
+        $reservation->setFormateur($user);
         $form = $this->createForm(ReservationType::class, $reservation);
         $form->handleRequest($request);
         
@@ -80,7 +83,7 @@ class ReservationController extends AbstractController
             $reservation->getDateHeureFin()->add($duration);
             $entityManager = $this->getDoctrine()->getManager();   // connexion à la base de donnees           
             $reservations = $reservationRepository->findBySalle($salle->getlibellesalle()); //recuperation des données en fonction de la salle
-            dump($reservation->getDateHeureFin()->format('H'));
+            
             
 
             if(!empty($reservations)) {
